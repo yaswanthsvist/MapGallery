@@ -5,22 +5,10 @@ import nav from './navReducer';
 const ticker=(state=[],action)=>{
   switch(action.type){
     case "RESET_TICKER":
-      return {id:null,first_tickerid:null,first_ticker:null,toggle_tickerid:false};
+      return {id:null,first_tickerid:null,first_ticker:0,second_ticker:0,toggle_message:false};
       break;
-    case "SET_FIRST_TICKER_ID":
-      return { ...state , first_tickerid : action.id };
-      break;
-    case "SET_FIRST_TICKER":
-      return { ...state , first_ticker : action.val };
-      break;
-    case "SET_SECOND_TICKER":
-      return { ...state , second_ticker : action.val };
-      break;
-    case "SHOW_MESSAGE":
-      return { ...state , toggle_tickerid : true };
-      break;
-    case "HIDE_MESSAGE":
-      return { ...state , toggle_message : false };
+    case "UPDATE_TICKER":
+      return { ...state , first_ticker : action.first ,  second_ticker : action.second , toggle_message : action.toggle_message };
       break;
     default:
       return state;
@@ -44,5 +32,6 @@ const images=(state=[],action)=>{
 rootReducer=combineReducers({
   nav,
   images,
+  ticker,
 })
 export default rootReducer;

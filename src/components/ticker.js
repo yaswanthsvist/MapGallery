@@ -1,28 +1,34 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {
-  AppRegistry,
-  Dimensions,
-  StyleSheet,
-  ScrollView,
-  Image,
   Text,
-  TouchableHighlight,
-  CameraRoll,
   View,
 } from 'react-native';
-import ImageResizer from 'react-native-image-resizer';
-import MapView from 'react-native-maps';
 
 class Ticker extends React.Component {
   static navigationOptions = {
     drawerLabel: 'Ticker Task',
   };
+  componentWillMount() {
+
+    let id=setInterval(updateTickers)
+  }
+  updateTickers=()=>{
+
+     const {first_ticker,second_ticker,toggle_message}=this.props.ticker;
+
+  }
   constructor(props) {
     super(props);
     this.imageMarkers=[];
     this.props.dispatch({type:"RESET_TICKERS"})
+    this.startTickers=this.startTickers.bind(this);
+    this.updateTickers=this.updateTickers.bind(this);
     this.startTickers();
+    
+  }
+  componentWillReceiveProps(nextProps) {
+
   }
   async componentWillReceiveProps(nextProps) {
 
@@ -31,6 +37,8 @@ class Ticker extends React.Component {
     //console.log(this.props);
     return (
       <View>
+        <View></View>
+
       </View>
     );
   }
