@@ -10,35 +10,54 @@ class Ticker extends React.Component {
     drawerLabel: 'Ticker Task',
   };
   componentWillMount() {
-
-    let id=setInterval(updateTickers)
   }
-  updateTickers=()=>{
-
-     const {first_ticker,second_ticker,toggle_message}=this.props.ticker;
-
+  componentWillUnmount() {
+    const {first_tickerid}=this.props.ticker;
+      clearInterval(first_tickerid);
   }
+
   constructor(props) {
+
     super(props);
     this.imageMarkers=[];
     this.props.dispatch({type:"RESET_TICKERS"})
     this.startTickers=this.startTickers.bind(this);
-    this.updateTickers=this.updateTickers.bind(this);
     this.startTickers();
-    
-  }
-  componentWillReceiveProps(nextProps) {
 
   }
-  async componentWillReceiveProps(nextProps) {
+  startTickers(){
+    const {dispatch}=this.props;
+    const updateTickers=()=>{
+      let {first_ticker,second_ticker,toggle_message}=this.props.ticker;
+      console.log(this.props.ticker);
+      first_ticker++;
+      if(first_ticker%10==0){
+        console.log("first_ticker%10==0");
+        toggle_message=false;
+        second_ticker++;
+      }
+      if(first_ticker%30==0){
 
+        toggle_message=true;
+      }
+      console.log(first_ticker,second_ticker,toggle_message);
+      console.log(this.props.ticker);
+      dispatch({type:"UPDATE_TICKER",toggle_message,first_ticker,second_ticker});
+    }
+    const id=setInterval(updateTickers,1000);
+    dispatch({type:"SET_FIRST_TIMER_ID",id});
   }
   render() {
-    //console.log(this.props);
+    let {first_ticker,second_ticker,toggle_message}=this.props.ticker;
+    let message=``;
+    if(toggle_message){
+      message=`This message will dissapear in ${10-first_ticker%10} secs`;
+    }
     return (
       <View>
-        <View></View>
+        <Text>{`${second_ticker} : ${first_ticker}`}</Text>
 
+        <Text>{`${message}`}</Text>
       </View>
     );
   }
@@ -49,28 +68,7 @@ class Ticker extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  images: state.images,
+  ticker: state.ticker,
 });
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexWrap:'wrap',
-    flexDirection: 'row',
-  },
-  preview: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center'
-  },
-  capture: {
-    flex: 0,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    color: '#000',
-    padding: 10,
-    margin: 40
-  }
-});
-
-export default connect(mapStateToProps)(Galery);
+export default connect(mapStateToProps)(Ticker);

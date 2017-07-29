@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 
 import Galery from "./../components/galery";
 import Capture from './../components/capture';
+import Ticker from './../components/ticker';
 
 const DrawerComponent=(props)=>(
   <View style={{flex:1}}>
@@ -15,9 +16,12 @@ const DrawerComponent=(props)=>(
       <DrawerItems {...props}/>
     </View>
   </View>
-)
+);
 
 export const AppNavigator=DrawerNavigator({
+    Ticker:{
+      screen:Ticker,
+    },
     Capture:{
       screen:Capture,
     },
